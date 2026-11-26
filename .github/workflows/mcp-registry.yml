@@ -1,0 +1,24 @@
+name: Publish AgentRouter to the MCP Registry
+on: workflow_dispatch
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate and publish the remote server
+        env:
+          PUBLISHER_VERSION: v1.8.16
+          PUBLISHER_SHA256: 6e2f799550cf843c6fd3350498d56cc49be3dc0af1e6237eb0e6435c7a9d5c05
+        run: |
+          archive=mcp-publisher_linux_amd64.tar.gz
+          curl -fsSLo "$RUNNER_TEMP/$archive" "https://github.com/modelcontextprotocol/registry/releases/download/$PUBLISHER_VERSION/$archive"
+          echo "$PUBLISHER_SHA256  $RUNNER_TEMP/$archive" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP" mcp-publisher
+          "$RUNNER_TEMP/mcp-publisher" validate
+          "$RUNNER_TEMP/mcp-publisher" login github-oidc
+          "$RUNNER_TEMP/mcp-publisher" publish
