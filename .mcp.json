@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "tools": {
+      "command": "npx",
+      "args": [
+        "--yes",
+        "mcp-remote@0.16.7",
+        "https://mcp.agentrouter.to/",
+        "--transport",
+        "http-only",
+        "--static-oauth-client-metadata",
+        "{\"client_name\":\"AgentRouter for goose\",\"scope\":\"read invoke\"}"
+      ]
+    }
+  }
+}
