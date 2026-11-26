@@ -1,0 +1,4 @@
+{
+  "client_name": "AgentRouter for goose",
+  "scope": "read invoke"
+}
